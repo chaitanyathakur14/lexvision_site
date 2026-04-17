@@ -1,0 +1,283 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<div class="row justify-content-center">
+    <div class="col-lg-11">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-uppercase tracking-wider">LexVision <span class="text-primary">Pipeline Analysis</span></h2>
+            <p class="text-muted">End-to-End Computer Vision Workflow (CVA Modules 1-6)</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-7">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-dark py-3">
+                        <ul class="nav nav-pills nav-justified" id="pipeline-tab" role="tablist">
+                            <li class="nav-item">
+                                <button class="nav-link active small text-white" data-bs-toggle="pill" data-bs-target="#step1">1. ORIG</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link small text-white" data-bs-toggle="pill" data-bs-target="#step2">2. BIN</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link small text-white" data-bs-toggle="pill" data-bs-target="#step3">3. SKEW</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link small fw-bold text-success border border-success" data-bs-toggle="pill" data-bs-target="#step4">4. MAP</button>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card-body bg-light text-center">
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="step1">
+                                <span class="badge bg-secondary mb-2">Module 1: Image Acquisition</span>
+                                <div class="img-container border rounded bg-white p-2">
+                                    <img src="/media/{{ steps.step1 }}" class="img-fluid rounded shadow-sm" style="max-height: 550px;">
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="step2">
+                                <span class="badge bg-primary mb-2">Module 3: Otsu Thresholding</span>
+                                <div class="img-container border rounded bg-white p-2">
+                                    <img src="/media/{{ steps.step2 }}" class="img-fluid rounded shadow-sm" style="max-height: 550px;">
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="step3">
+                                <span class="badge bg-info mb-2">Module 3: Geometric Deskewing</span>
+                                <div class="img-container border rounded bg-white p-2">
+                                    <img src="/media/{{ steps.step3 }}" class="img-fluid rounded shadow-sm" style="max-height: 550px;">
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="step4">
+                                <span class="badge bg-success mb-2">Module 4: Feature Detection (Verified)</span>
+                                <div class="img-container border border-success border-2 rounded bg-white p-2">
+                                    <img src="/media/{{ steps.step4 }}" class="img-fluid rounded shadow" style="max-height: 550px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white py-2 text-center">
+                        <small class="text-muted"><i class="bi bi-info-circle me-1"></i> Toggle tabs to view CV processing stages</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="card shadow-sm mb-4 border-0">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-4 border-bottom pb-2">Extracted Metrics</h5>
+                        
+                        <div class="mb-4">
+                            <label class="small text-uppercase text-muted fw-bold d-block">Verification Status</label>
+                            {% if verified %}
+                                <div class="alert alert-success d-flex align-items-center py-2 mt-1 mb-0 border-0">
+                                    <i class="bi bi-patch-check-fill fs-4 me-2"></i>
+                                    <strong>AUTHENTICATED</strong>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-danger d-flex align-items-center py-2 mt-1 mb-0 border-0">
+                                    <i class="bi bi-exclamation-triangle-fill fs-4 me-2"></i>
+                                    <strong>UNVERIFIED</strong>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="small text-uppercase text-muted fw-bold">Extracted Case ID</label>
+                                <p class="h6 text-primary border-start border-primary border-3 ps-2">{{ case_name }}</p>
+                            </div>
+                            
+                            <div class="col-12 border-top pt-3">
+                                <label class="small text-uppercase text-muted fw-bold">Classification (SVM + HOG)</label>
+                                <div class="d-flex justify-content-between align-items-center mt-1">
+                                    <span class="badge bg-dark text-white p-2">
+                                        <i class="bi bi-tag-fill me-1"></i> {{ category }}
+                                    </span>
+                                    <span class="text-primary fw-bold">{{ confidence }} Match</span>
+                                </div>
+                                <div class="progress mt-2" style="height: 6px;">
+                                    <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ confidence }}"></div>
+                                </div>
+                            </div>
+                        
+                            <div class="col-12 border-top pt-3">
+                                <label class="small text-uppercase text-muted fw-bold">Metadata</label>
+                                <p class="small mb-1 text-dark"><i class="bi bi-bank me-2 text-primary"></i>{{ ipc_section }}</p>
+                                <p class="small text-muted mb-1"><i class="bi bi-calendar-event me-2 text-primary"></i>Year: {{ year }}</p>
+                                <p class="small text-muted mb-0">
+                                    <i class="bi bi-cpu me-2 text-primary"></i>Model Accuracy: <span class="text-success fw-bold">{{ model_accuracy }}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm border-0 overflow-hidden">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-2">
+                        <span class="small fw-bold">MODULE 5: RAW TRANSCRIPT</span>
+                        <button class="btn btn-sm btn-outline-light border-0" onclick="copyToClipboard()">
+                            <i class="bi bi-clipboard" id="copy-icon"></i>
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="bg-dark text-light p-3" style="height: 300px; overflow-y: auto;">
+                            <pre id="ocrText" style="white-space: pre-wrap; font-size: 0.8rem; color: #a5d6a7; font-family: 'Courier New', monospace;">{{ extracted_text }}</pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-3 d-grid">
+                    <a href="/" class="btn btn-primary shadow-sm rounded-pill">
+                        <i class="bi bi-plus-circle me-1"></i> New Document
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow border-0 mt-5 overflow-hidden">
+            <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between py-3">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-robot fs-4 me-2"></i>
+                    <div>
+                        <h6 class="mb-0 fw-bold">LexVision Legal Assistant</h6>
+                        <small class="opacity-75">AI-Powered Judgment Analysis</small>
+                    </div>
+                </div>
+                <span class="badge bg-white text-primary rounded-pill">Gemini 3 Flash</span>
+            </div>
+            
+            <div class="card-body bg-light p-0">
+                <div id="chat-history" style="height: 350px; overflow-y: auto;" class="p-4 d-flex flex-column gap-3">
+                    <div class="bot-msg shadow-sm p-3 rounded-4 bg-white text-dark align-self-start border">
+                        Document analysis complete. You can ask me about the <b>parties involved</b>, <b>final verdict</b>, or <b>legal citations</b>.
+                    </div>
+                </div>
+                
+                <div class="p-3 bg-white border-top">
+                    <div class="input-group shadow-sm rounded-pill overflow-hidden border">
+                        <input type="text" id="user-q" class="form-control border-0 px-4 py-2" placeholder="Ask a question about this judgment..." onkeypress="if(event.key === 'Enter') askChatbot()">
+                        <button class="btn btn-primary px-4" onclick="askChatbot()">
+                            <i class="bi bi-send-fill"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function askChatbot() {
+    const qInput = document.getElementById('user-q');
+    const q = qInput.value.trim();
+    const context = document.getElementById('ocrText').innerText;
+    const history = document.getElementById('chat-history');
+    
+    if (!q) return;
+
+    // 1. Add User Message Bubble
+    history.innerHTML += `
+        <div class="user-msg shadow-sm p-3 rounded-4 align-self-end text-white bg-primary">
+            ${q}
+        </div>`;
+    
+    qInput.value = ""; // Clear input
+    history.scrollTop = history.scrollHeight; // Scroll to bottom
+
+    // 2. Add Thinking Indicator
+    const thinkingId = "thinking-" + Date.now();
+    history.innerHTML += `
+        <div id="${thinkingId}" class="bot-msg shadow-sm p-3 rounded-4 align-self-start bg-white border text-muted">
+            <div class="spinner-grow spinner-grow-sm text-primary me-2"></div> Analysing document...
+        </div>`;
+    history.scrollTop = history.scrollHeight;
+
+    // 3. API Call
+    fetch('/ask-document/', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'question': q, 
+            'context': context, 
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        // Remove thinking spinner
+        const thinkingBubble = document.getElementById(thinkingId);
+        if(thinkingBubble) thinkingBubble.remove();
+        
+        // 4. Render AI Response with Markdown
+        const formattedAnswer = marked.parse(data.answer); 
+        history.innerHTML += `
+            <div class="bot-msg shadow-sm p-3 rounded-4 align-self-start bg-white border text-dark">
+                ${formattedAnswer}
+            </div>`;
+        
+        history.scrollTop = history.scrollHeight;
+    })
+    .catch(err => {
+        const thinkingBubble = document.getElementById(thinkingId);
+        if(thinkingBubble) thinkingBubble.innerHTML = "Error contacting AI service.";
+    });
+}
+
+function copyToClipboard() {
+    const text = document.getElementById('ocrText').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        const icon = document.getElementById('copy-icon');
+        icon.classList.replace('bi-clipboard', 'bi-check-lg');
+        setTimeout(() => icon.classList.replace('bi-check-lg', 'bi-clipboard'), 2000);
+    });
+}
+</script>
+
+<style>
+    /* Tab Styling */
+    .nav-pills .nav-link { 
+        border-radius: 0; 
+        font-size: 0.75rem; 
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s ease;
+    }
+    .nav-pills .nav-link.active { 
+        background: none !important; 
+        color: #fff !important; 
+        border-bottom-color: #0d6efd; 
+    }
+
+    /* Chat System Layout */
+    #chat-history {
+        background-color: #f8f9fa;
+    }
+
+    .user-msg {
+        max-width: 80%;
+        border-bottom-right-radius: 2px !important;
+        font-size: 0.95rem;
+    }
+
+    .bot-msg {
+        max-width: 85%;
+        border-bottom-left-radius: 2px !important;
+        font-size: 0.95rem;
+    }
+
+    /* Markdown styling inside bubbles */
+    .bot-msg p:last-child { margin-bottom: 0; }
+    .bot-msg ul { padding-left: 1.2rem; margin-bottom: 0; }
+
+    /* Scrollbar */
+    #chat-history::-webkit-scrollbar { width: 4px; }
+    #chat-history::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 10px; }
+    
+    pre::-webkit-scrollbar { width: 6px; }
+    pre::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+
+    .img-container img { transition: transform 0.3s ease; }
+    .img-container:hover img { transform: scale(1.02); }
+</style>
+{% endblock %}

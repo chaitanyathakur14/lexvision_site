@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5 animate__animated animate__fadeInDown">
+        <h1 class="display-4 fw-bold text-dark">LexVision <span class="text-primary">Judicial Analysis</span></h1>
+        <p class="lead text-muted mx-auto" style="max-width: 700px;">
+            A state-of-the-art Computer Vision pipeline for the Indian Judiciary. 
+            Automating extraction, verification, and classification of scanned legal records.
+        </p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-10">
+            <div class="card border-0 shadow-lg mb-5" style="border-radius: 24px; background: #ffffff;">
+                <div class="card-body p-5">
+                    <form method="post" enctype="multipart/form-data" id="uploadForm">
+                        {% csrf_token %}
+                        
+                        <div class="upload-zone p-5 text-center mb-4" id="dropZone">
+                            <i class="bi bi-cloud-arrow-up display-1 text-primary mb-3"></i>
+                            <h4 class="fw-bold">Upload Scanned Document</h4>
+                            <p class="text-muted">Drag and drop your PDF or Image here, or click to browse</p>
+                            
+                            <input type="file" name="document" id="fileInput" class="d-none" required>
+                            <button type="button" class="btn btn-outline-primary rounded-pill px-4" onclick="document.getElementById('fileInput').click()">
+                                Select File
+                            </button>
+                            <div id="fileInfo" class="mt-3 fw-bold text-success d-none"></div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button class="btn btn-primary btn-lg py-3 shadow" type="submit" id="analyzeBtn">
+                                <i class="bi bi-cpu-fill me-2"></i> Start CVA Pipeline Analysis
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row g-4 text-center">
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <div class="h3 text-primary mb-2"><i class="bi bi-layers-half"></i></div>
+                        <h6 class="fw-bold">Module 3</h6>
+                        <p class="small text-muted">Binarization & Geometric Deskewing</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <div class="h3 text-primary mb-2"><i class="bi bi-search"></i></div>
+                        <h6 class="fw-bold">Module 4</h6>
+                        <p class="small text-muted">Feature Detection & Signature Mapping</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <div class="h3 text-primary mb-2"><i class="bi bi-text-paragraph"></i></div>
+                        <h6 class="fw-bold">Module 5</h6>
+                        <p class="small text-muted">Tesseract OCR & Post-Processing</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --primary-blue: #2563eb;
+    }
+
+    body { background-color: #f8fafc; }
+
+    /* Drag & Drop Styling */
+    .upload-zone {
+        border: 2px dashed #e2e8f0;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        background-color: #fcfdfe;
+        cursor: pointer;
+    }
+
+    .upload-zone:hover, .upload-zone.dragover {
+        border-color: var(--primary-blue);
+        background-color: #f0f7ff;
+        transform: scale(1.01);
+    }
+
+    .btn-primary {
+        background-color: var(--primary-blue);
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+
+    .btn-primary:hover {
+        background-color: #1d4ed8;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2) !important;
+    }
+
+    /* Loading Animation */
+    .analyzing {
+        pointer-events: none;
+        opacity: 0.7;
+    }
+</style>
+
+<script>
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfo = document.getElementById('fileInfo');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+
+    // Trigger file selection on click
+    dropZone.onclick = () => fileInput.click();
+
+    // Show file name after selection
+    fileInput.onchange = () => {
+        if (fileInput.files.length > 0) {
+            fileInfo.textContent = `Selected: ${fileInput.files[0].name}`;
+            fileInfo.classList.remove('d-none');
+        }
+    };
+
+    // Drag and Drop Logic
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length > 0) {
+            fileInput.files = e.dataTransfer.files;
+            fileInfo.textContent = `Selected: ${fileInput.files[0].name}`;
+            fileInfo.classList.remove('d-none');
+        }
+    });
+
+    // Loading State for the Demo
+    document.getElementById('uploadForm').onsubmit = function() {
+        analyzeBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Initializing CVA Pipeline...';
+        analyzeBtn.classList.add('analyzing');
+    };
+</script>
+{% endblock %}

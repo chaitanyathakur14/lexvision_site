@@ -1,0 +1,16 @@
+# Django
+*.pyc
+__pycache__/
+db.sqlite3
+db.sqlite3-journal
+
+# Environment variables
+.env
+
+# Media & Static (generated)
+media/
+staticfiles/
+
+# OS
+.DS_Store
+Thumbs.db
