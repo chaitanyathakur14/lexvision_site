@@ -27,7 +27,7 @@ Fully aligned with **CVA Syllabus Modules 1–8**.
 - End-to-end 4-stage CV pipeline (ORIG → BIN → SKEW → MAP)
 - Signature detection & authentication
 - Case number, year, jurisdiction extraction using Regex
-- Hybrid classification (97% model accuracy claimed)
+- Hybrid classification 
 - Interactive AI Legal Assistant (Gemini-powered)
 - Clean, responsive Streamlit-like Django UI
 
