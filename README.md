@@ -47,7 +47,7 @@ Fully aligned with **CVA Syllabus Modules 1–8**.
 ---
 ---
 
-## 🚀 How to Run Locally
+##  How to Run Locally
 
 1. **Clone the repository**
    ```bash
