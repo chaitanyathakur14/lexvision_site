@@ -63,9 +63,9 @@ Open http://127.0.0.1:8000/ and upload a judgment PDF.
 
 ## Project Demo
 ### End-to-End Pipeline
-![LexVision Pipeline Analysis](lex1.png)
-![LexVision Pipeline Analysis](lex2.png)
-![LexVision Pipeline Analysis](lex3.png)
+![LexVision Pipeline Analysis](lex_1.png)
+![LexVision Pipeline Analysis](lex_2.png)
+![LexVision Pipeline Analysis](lex_3.png)
 
 ### Legal Assistant Chat
-![LexVision Assistant](lex4.png)
+![LexVision Assistant](lex_4.png)
