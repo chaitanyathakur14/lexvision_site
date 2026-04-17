@@ -45,5 +45,18 @@ Fully aligned with **CVA Syllabus Modules 1–8**.
 - **Deployment Ready**: Docker + Railway
 
 ---
+---
 
-##  Project Structure
+## 🚀 How to Run Locally
+
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd lexvision_site
+
+Install dependenciesBashpip install -r requirements.txt
+Setup paths (in utils.py)
+Update POPPLER_PATH and Tesseract path according to your system.
+
+Run the serverBashpython manage.py runserver
+Open http://127.0.0.1:8000/ and upload a judgment PDF.
