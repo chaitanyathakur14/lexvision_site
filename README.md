@@ -61,6 +61,14 @@ Wilcoxon Signed-Rank tests confirm extractive methods are **statistically signif
 
 ---
 
+## Project Demo Data Preprocessing - Final images of entire deployment will be updated soon!
+End-to-End Pipeline
+![LexVision Pipeline Analysis](lex_1.png)
+![LexVision Pipeline Analysis](lex_2.png)
+![LexVision Pipeline Analysis](lex_3.png)
+### Legal Assistant Chat
+![LexVision Assistant](lex_4.png)
+
 ## How to Run
 
 ```bash
