@@ -78,13 +78,5 @@ cd legal-document-summarization
 pip install -r requirements.txt
 python pipeline.py
 
-##Project Demo Data Preprocessing
-End-to-End Pipeline
-![LexVision Pipeline Analysis](lex_1.png)
-![LexVision Pipeline Analysis](lex_2.png)
-![LexVision Pipeline Analysis](lex_3.png)
-### Legal Assistant Chat
-![LexVision Assistant](lex_4.png)
-
 
 ## Project Structure
