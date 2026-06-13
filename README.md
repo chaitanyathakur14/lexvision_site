@@ -1,67 +1,85 @@
-# LexVision - Judicial Document Intelligence
+# Legal Document Summarization Pipeline for Indian Supreme Court Judgments
 
-**Computer Vision & Analytics (CVA) Project**  
-**E009 Chaitanya Thakur | E012 Bharat Baswan**  
-**SVKM’s NMIMS - Mukesh Patel School of Technology Management & Engineering**  
-**April 2026 Demo**
-
----
-
-## Project Overview
-
-LexVision is an intelligent system that processes Indian Supreme Court and High Court judgment PDFs using **Computer Vision** and **Hybrid AI** techniques.
-
-It performs:
-- Document preprocessing (grayscale, binarization, deskewing)
-- Signature / Stamp verification
-- Case metadata extraction
-- Document classification (Writ / Civil / Criminal) using **SVM + HOG + Text Heuristics**
-- AI-powered legal assistant using **Gemini 3 Flash**
-
-Fully aligned with **CVA Syllabus Modules 1–8**.
+**NLP Research Project**  
+**Author:** Chaitanya Thakur  
+**Status:** Completed (April–June 2026)
 
 ---
 
-## Features
+## Overview
 
-- End-to-end 4-stage CV pipeline (ORIG → BIN → SKEW → MAP)
-- Signature detection & authentication
-- Case number, year, jurisdiction extraction using Regex
-- Hybrid classification 
-- Interactive AI Legal Assistant (Gemini-powered)
-- Clean, responsive Streamlit-like Django UI
+Developed a complete research-grade pipeline for **extractive and abstractive summarization** of long legal documents. Processed **1,999 Supreme Court of India judgments** (2020–2024) and conducted a rigorous comparative evaluation of four models: **TF-IDF, TextRank, BART, and T5**.
+
+The pipeline includes PDF ingestion with OCR fallback, intelligent chunking for very long documents, multiple summarization approaches, and comprehensive evaluation using ROUGE, BERTScore, and Wilcoxon statistical significance tests.
+
+This work highlights important differences between lexical overlap (ROUGE) and semantic similarity (BERTScore) in the **legal domain**.
+
+---
+
+## Key Features
+
+- Robust 3-layer PDF text extraction (pdfplumber → PyMuPDF → Tesseract OCR + OpenCV preprocessing)
+- Sliding window chunking with overlap for long judgments
+- Extractive: TF-IDF + TextRank
+- Abstractive: BART-large-cnn + T5-small
+- Headnote-based reference summary extraction
+- Full train/val/test split (70/15/15, year-stratified)
+- Multi-metric evaluation + statistical significance testing
+- Reproducible results with saved CSVs and visualizations
+
+---
+
+## Dataset Statistics
+
+- **Total Documents:** 1,999
+- **Avg. Length:** 9,873 words
+- **Median Length:** 6,028 words
+- **Year Distribution:** ~400 judgments per year (2020–2024)
+- **Splits:** Train (1,399), Val (300), Test (300)
+
+---
+
+## Results Summary
+
+| Model     | ROUGE-1 | ROUGE-2 | ROUGE-L | BERTScore-F1 | Avg Time (s) |
+|-----------|---------|---------|---------|--------------|--------------|
+| TF-IDF    | **0.4927** | **0.3937** | **0.3106** | **0.8272** | **0.01** |
+| TextRank  | 0.4405  | 0.3478  | 0.2932  | 0.8227       | 0.02         |
+| BART      | 0.2898  | 0.1941  | 0.2305  | 0.8231       | 28.56        |
+| T5        | 0.2787  | 0.1919  | 0.2179  | 0.8020       | 11.89        |
+
+**Key Insight:** TF-IDF performs best on ROUGE, while BART achieves near-parity on semantic quality (BERTScore) despite lower lexical overlap.
+
+Wilcoxon tests show extractive methods are **statistically significantly better** than abstractive ones on ROUGE metrics (p < 0.001).
 
 ---
 
 ## Tech Stack
 
-- **Backend**: Django 5.2
-- **Computer Vision**: OpenCV, scikit-image
-- **OCR**: Tesseract + pytesseract
-- **PDF Processing**: pdf2image + Poppler
-- **ML Model**: SVM + HOG (scikit-learn)
-- **AI Assistant**: Google Gemini 3 Flash
-- **Frontend**: Bootstrap + Custom CSS
-- **Deployment Ready**: Docker + Railway
+- **Core:** Python, Pandas, NumPy, scikit-learn, NetworkX
+- **NLP:** Hugging Face Transformers (BART, T5), ROUGE, BERTScore
+- **PDF/OCR:** pdfplumber, PyMuPDF, Tesseract, OpenCV
+- **Visualization:** Matplotlib, Seaborn
 
 ---
----
 
-##  How to Run Locally
+## Project Structure (Planned)
+legal-summarization/
+├── pipeline.py                 # Main pipeline script
+├── dataset/                    # Raw PDFs + splits
+├── assets/                     # Results CSVs + figures
+├── notebooks/                  # Analysis notebooks
+├── README.md
+└── requirements.txt
+text---
 
-1. **Clone the repository**
-   ```bash
-   git clone <your-repo-url>
-   cd lexvision_site
+## How to Run
 
-Install dependenciesBashpip install -r requirements.txt
-Setup paths (in utils.py)
-Update POPPLER_PATH and Tesseract path according to your system.
+```bash
+pip install -r requirements.txt
+python pipeline.py
 
-Run the serverBashpython manage.py runserver
-Open http://127.0.0.1:8000/ and upload a judgment PDF.
-
-## Project Demo
+## Project Demo Data Preprocessing
 ### End-to-End Pipeline
 ![LexVision Pipeline Analysis](lex_1.png)
 ![LexVision Pipeline Analysis](lex_2.png)
