@@ -59,8 +59,6 @@ Wilcoxon Signed-Rank tests confirm extractive methods are **statistically signif
 
 ---
 
----
-
 ## Project Demo Data Preprocessing - Final images of entire deployment will be updated soon!
 End-to-End Pipeline
 ![LexVision Pipeline Analysis](lex_1.png)
@@ -78,5 +76,3 @@ cd legal-document-summarization
 pip install -r requirements.txt
 python pipeline.py
 
-
-## Project Structure
